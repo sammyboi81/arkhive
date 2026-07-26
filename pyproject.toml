@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "humane-intelligence"
 version = "0.1.1"
-description = "Governed, tamper-evident memory for any AI — an MCP server. Memory so it doesn't lose itself; governance so it can't lose us."
+description = "ArkHive MCP — governed, tamper-evident memory for AI agents. Tell your AI to check the ArkHive."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "Apache-2.0" }
 authors = [{ name = "ZagAIrot Technologies LLC" }]
-keywords = ["mcp", "model-context-protocol", "ai-memory", "claude", "llm", "ai-agents", "governance", "tamper-evident", "anthropic"]
+keywords = ["arkhive", "mcp", "model-context-protocol", "ai-memory", "claude", "llm", "ai-agents", "governance", "tamper-evident", "anthropic"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
@@ -29,6 +29,7 @@ Repository = "https://github.com/sammyboi81/humane-intelligence"
 "Live API" = "https://dondatabrain.com/humane-api/docs"
 
 [project.scripts]
+arkhive-mcp = "server:main_sync"
 humane-intelligence = "server:main_sync"
 
 [tool.setuptools]

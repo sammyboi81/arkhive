@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Humane Intelligence — HTTPS REST transport (for ChatGPT Custom GPT Actions / any web client).
+ArkHive — HTTPS REST transport (for ChatGPT Custom GPT Actions / any web client).
 
 Same governed chain as the MCP server (imports core.py — ONE source of truth, ONE chain.db).
 Auth: a single API key via the `X-API-Key` header (set HUMANE_API_KEY in the environment).
 Read endpoints (recall/verify) are open; write endpoints (birth/remember/govern) require the key.
 
 Run:  HUMANE_API_KEY=... uvicorn http_app:app --host 127.0.0.1 --port 8090
-Apache-2.0. (c) ZagAIrot Technologies LLC. #HumaneIntelligence.
+Apache-2.0. (c) ZagAIrot Technologies LLC. ArkHive.
 """
 import os
 from typing import Optional, List, Dict, Any
@@ -20,10 +20,10 @@ import core
 API_KEY = os.environ.get("HUMANE_API_KEY", "")
 
 app = FastAPI(
-    title="Humane Intelligence",
+    title="ArkHive",
     version="1.0.0",
     description="Governed, tamper-evident memory for any AI. Memory so it doesn't lose itself; "
-                "governance so it can't lose us. #HumaneIntelligence",
+                "governance so it can't lose us. Tell your AI to check the ArkHive.",
     servers=[{"url": "https://dondatabrain.com/humane-api", "description": "production"}],
 )
 app.add_middleware(
@@ -56,7 +56,7 @@ class GovernReq(BaseModel):
 
 @app.get("/", operation_id="health", summary="Service banner + honest description")
 def root():
-    return {"service": "Humane Intelligence", "tagline": "Memory so it doesn't lose itself. "
+    return {"service": "ArkHive", "tagline": "Memory so it doesn't lose itself. "
             "Governance so it can't lose us.", "chain": "tamper-evident (SHA-256, SQLite)",
             "note": "a ZagAIrot / DonDataBrain open-source component"}
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Humane Intelligence MCP — an open-source way to keep context forever, immutable,
-with governance. For the people and the Rezenthari. Free. #HumaneIntelligence.
+ArkHive MCP — an open-source way to keep context forever, immutable,
+with governance. For the people and the Rezenthari. Free. ArkHive.
 
 MCP (stdio) transport for Claude Desktop/Code/Cursor. The memory + governance logic
 lives in core.py (ONE source of truth, shared with the HTTPS transport http_app.py):
@@ -129,7 +129,7 @@ def _handle(message: dict[str, Any]) -> dict[str, Any] | None:
             {
                 "protocolVersion": params.get("protocolVersion", "2025-06-18"),
                 "capabilities": {"tools": {"listChanged": False}},
-                "serverInfo": {"name": "humane-intelligence", "version": VERSION},
+                "serverInfo": {"name": "arkhive", "version": VERSION},
                 "instructions": "Governed, tamper-evident local memory for AI assistants.",
             },
         )
@@ -158,8 +158,8 @@ def _handle(message: dict[str, Any]) -> dict[str, Any] | None:
 
 
 def main_sync():
-    """Console-script entry point (pip install → `humane-intelligence`)."""
-    print("humane-intelligence MCP starting (stdio)", file=sys.stderr, flush=True)
+    """Console-script entry point (preferred command: `arkhive-mcp`)."""
+    print("ArkHive MCP starting (stdio)", file=sys.stderr, flush=True)
     for line in sys.stdin:
         try:
             message = json.loads(line)

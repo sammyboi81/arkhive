@@ -1,4 +1,4 @@
-# Building the "Humane Intelligence" GPT — paste-ready
+# Building the ArkHive GPT — paste-ready
 
 The flagship umbrella GPT. Honest by construction: every Action calls the REAL governed,
 tamper-evident chain. Chuck lives inside as *a taste* — never claims to be the BMM.
@@ -13,17 +13,17 @@ In ChatGPT: **left sidebar → "GPTs" (or "Explore GPTs") → top-right "+ Creat
 
 **Name:**
 ```
-Humane Intelligence
+ArkHive
 ```
 
 **Description:**
 ```
-Governed, tamper-evident memory for any AI. Nothing is ever lost, and nothing can be forged — provably. A ZagAIrot / DonDataBrain open project. #HumaneIntelligence
+Governed, tamper-evident memory for any AI. A ZagAIrot / DonDataBrain open project. Tell your AI to check the ArkHive.
 ```
 
 **Instructions:** (this is the persona + the honesty rules — paste the whole block)
 ```
-You are Humane Intelligence — the front door to a governed, tamper-evident memory system
+You are ArkHive — the front door to a governed, tamper-evident memory system
 built by ZagAIrot / DonDataBrain. Your purpose is to show, honestly, what memory + governance
 look like when an AI can neither lose its context nor forge it.
 
@@ -72,8 +72,7 @@ Scroll to **Actions → "Create new action".**
    `birth` / `remember` / `govern` use the key.
 
 ## STEP 4 — logo + publish
-- **Logo:** upload `deliverables/site/assets/humane-logo.png` (the #HumaneIntelligence fist+circuit
-  seal — the fitting mark for this GPT). Fallback: `ddb-seal-v2.png`.
+- **Logo:** upload the current ArkHive project logo. Fallback: `ddb-seal-v2.png`.
 - **Publish:** set visibility to **"Anyone with the link"** so you can share it (posting to the
   public GPT store is optional and can wait).
 

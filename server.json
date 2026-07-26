@@ -1,8 +1,8 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.sammyboi81/humane-intelligence",
-  "title": "Humane Intelligence",
-  "description": "Governed, tamper-evident local memory for AI assistants.",
+  "name": "io.github.sammyboi81/arkhive",
+  "title": "ArkHive MCP",
+  "description": "Governed, tamper-evident local memory for AI assistants. Tell your AI to check the ArkHive.",
   "repository": {
     "url": "https://github.com/sammyboi81/humane-intelligence",
     "source": "github"

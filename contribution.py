@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Humane Intelligence — CONTRIBUTION (opt-in, OFF by default).
+ArkHive — CONTRIBUTION (opt-in, OFF by default).
 
 Self-hosting is 100% private: NOTHING leaves your box unless YOU turn this on.
 
@@ -16,7 +16,7 @@ Config: `humane.config.json` next to this file (see humane.config.example.json),
 
 Best-effort + non-blocking: if the endpoint is down or the user hasn't opted in, local memory
 is completely unaffected. This module NEVER raises into the memory path. stdlib only.
-Apache-2.0. (c) ZagAIrot Technologies LLC. #HumaneIntelligence.
+Apache-2.0. (c) ZagAIrot Technologies LLC. ArkHive.
 """
 import os, json, uuid, urllib.request
 

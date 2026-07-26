@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Humane Intelligence — core memory + governance logic (transport-agnostic).
+ArkHive — core memory + governance logic (transport-agnostic).
 
 The ONE source of truth for the tamper-evident chain. Both transports import this:
   * server.py    — MCP (stdio), for Claude Desktop/Code/Cursor
   * http_app.py  — REST (HTTPS), for ChatGPT Custom GPTs / any web client
 
 SQLite + SHA-256. Zero proprietary dependencies. Apache-2.0.
-(c) ZagAIrot Technologies LLC. #HumaneIntelligence.
+(c) ZagAIrot Technologies LLC. ArkHive.
 """
 import os, json, sqlite3, hashlib, time
 

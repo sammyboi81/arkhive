@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Humane Intelligence",
-    "description": "Governed, tamper-evident memory for any AI. Memory so it doesn't lose itself; governance so it can't lose us. #HumaneIntelligence",
+    "title": "ArkHive",
+    "description": "Governed, tamper-evident memory for any AI. Memory so it doesn't lose itself; governance so it can't lose us. Tell your AI to check the ArkHive.",
     "version": "1.0.0"
   },
   "servers": [
