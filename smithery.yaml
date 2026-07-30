@@ -1,0 +1,13 @@
+# Smithery configuration — https://smithery.ai/docs
+# Humane Intelligence MCP: local-first stdio server installed from PyPI.
+startCommand:
+  type: stdio
+  configSchema:
+    # No configuration is required; the server is local-first with no keys.
+    type: object
+    properties: {}
+  commandFunction: |-
+    (config) => ({ command: "humane-intelligence", args: [] })
+build:
+  dockerfile: Dockerfile
+  dockerBuildPath: .
