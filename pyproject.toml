@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "humane-intelligence"
 version = "0.1.1"
-description = "Governed, tamper-evident memory for any AI — an MCP server. Memory so it doesn't lose itself; governance so it can't lose us."
+description = "Local-first governed memory for AI agents, with persistent identity, tamper-evident history, verification, and constraint-aware decisions."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "Apache-2.0" }
 authors = [{ name = "ZagAIrot Technologies LLC" }]
-keywords = ["mcp", "model-context-protocol", "ai-memory", "claude", "llm", "ai-agents", "governance", "tamper-evident", "anthropic"]
+keywords = ["mcp", "model-context-protocol", "ai-memory", "agent-memory", "claude", "codex", "llm", "ai-agents", "ai-governance", "tamper-evident", "audit-log", "local-first", "responsible-ai"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
@@ -26,9 +26,12 @@ http = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.0"]
 [project.urls]
 Homepage = "https://dondatabrain.com"
 Repository = "https://github.com/sammyboi81/humane-intelligence"
+"Issue Tracker" = "https://github.com/sammyboi81/humane-intelligence/issues"
+"License" = "https://github.com/sammyboi81/humane-intelligence/blob/main/LICENSE"
 "Live API" = "https://dondatabrain.com/humane-api/docs"
 
 [project.scripts]
+arkhive-mcp = "server:main_sync"
 humane-intelligence = "server:main_sync"
 
 [tool.setuptools]

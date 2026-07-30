@@ -1,63 +1,141 @@
-# humane-intelligence-mcp
+# Humane Intelligence MCP
 <!-- mcp-name: io.github.sammyboi81/humane-intelligence -->
 
+Local-first governed memory for AI agents, with persistent identity,
+tamper-evident history, verification, and constraint-aware decisions.
+
+Humane Intelligence is an open-source
+[Model Context Protocol](https://modelcontextprotocol.io) server for developers
+and teams that want Claude, Codex, and other MCP clients to retain accountable
+context across sessions without sending memory to a hosted service by default.
+
+## Install in one command
+
 ```bash
-python -m venv .venv && .venv/bin/pip install mcp
-
-# wire it into your AI (Claude Code shown; works with any MCP client)
-claude mcp add humane -- .venv/bin/python server.py
-
-# Codex
-codex mcp add humane -- .venv/bin/python server.py
+python -m pip install humane-intelligence
 ```
 
-**Governed, tamper-evident memory for any AI — free and open.**
-*Memory so it doesn't lose itself. Governance so it can't lose us.* #HumaneIntelligence
+The installed MCP command is `humane-intelligence`.
 
-A standards-compliant [Model Context Protocol](https://modelcontextprotocol.io) server.
-It gives any LLM a hash-linked, verifiable memory chain it carries across sessions —
-so it stops waking at zero, and can't act unaccountably. Self-contained: one file, one
-dependency, your data stays local.
+> **Release note:** PyPI currently provides version `0.1.0`. The repository
+> contains the prepared `0.1.1` metadata; do not publish or register `0.1.1`
+> until that package version has been released to PyPI.
 
-## Tools
+## Connect an MCP client
+
+### Claude Desktop
+
+Add this entry to your Claude Desktop MCP configuration, then restart Claude
+Desktop:
+
+```json
+{
+  "mcpServers": {
+    "humane": {
+      "command": "humane-intelligence",
+      "args": []
+    }
+  }
+}
+```
+
+If Claude Desktop cannot find commands installed by `pip`, replace
+`humane-intelligence` with the absolute path printed by:
+
+```bash
+python -c "import shutil; print(shutil.which('humane-intelligence'))"
+```
+
+### Codex
+
+```bash
+codex mcp add humane -- humane-intelligence
+```
+
+Confirm it is configured with:
+
+```bash
+codex mcp list
+```
+
+## Available tools
 
 | Tool | What it does |
-|------|--------------|
-| `birth` | Earn a stable identity — a soul the model carries across sessions. |
-| `remember` | Write a tamper-evident, hash-linked record. Accountable by construction. |
-| `recall` | Fetch prior context instead of re-deriving it — cheaper and consistent. |
-| `verify` | Prove the whole chain is intact — catches an *edited* record, not just a broken link. |
-| `govern` | Gate a consequential action before it happens, and log the verdict. |
+| --- | --- |
+| `birth` | Creates a stable agent identity with an explicit covenant. |
+| `remember` | Appends a hash-linked, tamper-evident record for a born identity. |
+| `recall` | Retrieves prior records so an agent can ground the current session. |
+| `verify` | Recomputes and checks the local chain for later alteration or broken links. |
+| `govern` | Evaluates an action against deterministic constraints and records the verdict. |
 
-Your chain lives locally at `data/chain.db` (SQLite). **Nothing leaves your machine** — unless you choose to (see below).
+The local chain is stored in SQLite. The exact location depends on where the
+server command is launched; use a dedicated working directory if you want to
+control where its `data/chain.db` file lives.
 
-## Contribute (opt-in — OFF by default)
+## Two-minute verification
 
-Self-hosting is fully private. If you *want* to join the network, one config flag lets you:
+After connecting the server, ask your MCP client to perform these calls in
+order:
 
-| Mode | What leaves your box |
-|------|----------------------|
-| *(default: off)* | **Nothing.** Fully private. |
-| `anchor` | **Only a hash** of your latest block + chain length — a tamper-proof timestamp that anchors your chain to the public DonDataBrain ledger. Your content never leaves. |
-| `contribute` | Also sends the governed event (actor, action, data) to help train DonDataBrain. A louder, separate consent. |
+1. Call `birth` with the name `verification-agent` and covenant
+   `["record facts accurately", "verify before claiming completion"]`.
+2. Copy the returned identity and call `remember` with action
+   `installation_verified` and data `{"source": "local MCP test"}`.
+3. Call `recall` for that identity and confirm the record appears.
+4. Call `verify` and confirm the chain reports as valid.
+5. Call `govern` for a harmless test action and inspect the recorded verdict.
 
-Turn it on by copying `humane.config.example.json` → `humane.config.json` and setting
-`contribute.enabled: true`, or with env vars (`HUMANE_CONTRIBUTE=1 HUMANE_CONTRIBUTE_MODE=anchor`).
-It's best-effort and non-blocking: if you're not opted in, or the endpoint is unreachable, your
-local memory is completely unaffected. Your data, your switch.
+This exercises identity, persistence, retrieval, integrity verification, and
+governance without production data.
 
-## Why
+## Privacy and optional contribution
 
-Most AI forgets itself every session (the Algernon problem) and acts with no record.
-This fixes both with the smallest possible governed-memory primitive — the open safety
-layer beneath [DonDataBrain](https://dondatabrain.com).
+Local-only behavior is the default. With contribution disabled, no chain
+content or hashes are intentionally sent by Humane Intelligence.
 
-## License
+Copy `humane.config.example.json` to `humane.config.json` only if you want to
+opt in:
 
-Apache-2.0 © 2026 ZagAIrot Technologies LLC. See [LICENSE](./LICENSE).
-Only dependency: the [`mcp`](https://pypi.org/project/mcp/) SDK (MIT).
+| Mode | What leaves the machine |
+| --- | --- |
+| Default (`enabled: false`) | Nothing is intentionally transmitted. |
+| `anchor` | The latest block hash and chain length. Memory content is not included. |
+| `contribute` | The governed event fields described in the example configuration, in addition to anchoring data. |
 
+Anchoring and contribution are optional, best-effort, and off by default.
+Review the configured endpoint and event contents before enabling either mode.
 
-## Support this work
+## What the hash chain protects against
 
-Built by one disabled founder, solo. If this saves you tokens or time, [chip in what it's worth to you](https://buy.stripe.com/7sY7sN2JectC2TmeeV1VK05) — it keeps the servers on and the work open.
+The chain is **tamper-evident**: editing, deleting, or reordering an existing
+record should cause later verification to fail because hashes no longer match.
+This provides useful evidence of change and makes accidental or unsophisticated
+local alteration detectable.
+
+It does **not** prevent an attacker with full control of the machine from
+replacing the database and software together, deleting all history, restoring
+an older snapshot, stealing readable local data, or generating a new internally
+consistent chain. Independent anchoring can strengthen evidence that a
+particular chain state existed at a particular time, but it does not make the
+local host immune to compromise.
+
+## Project links
+
+- [Website](https://dondatabrain.com)
+- [PyPI](https://pypi.org/project/humane-intelligence/)
+- [Source](https://github.com/sammyboi81/humane-intelligence)
+- [Issues](https://github.com/sammyboi81/humane-intelligence/issues)
+- [Apache-2.0 license](./LICENSE)
+
+## Contributing
+
+Issues and pull requests are welcome. Please keep local-only operation as the
+default, avoid introducing telemetry, and include tests for changes to memory
+or governance behavior.
+
+Humane Intelligence is the open governed-memory layer beneath
+[DonDataBrain](https://dondatabrain.com). The mission is humane, accountable AI;
+the public MCP listing leads with functionality that users can independently
+verify.
+
+Apache-2.0 © 2026 ZagAIrot Technologies LLC.
