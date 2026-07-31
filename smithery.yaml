@@ -1,5 +1,5 @@
 # Smithery configuration — https://smithery.ai/docs
-# Humane Intelligence MCP: local-first stdio server installed from PyPI.
+# ArkHive MCP: local-first stdio server installed from PyPI.
 startCommand:
   type: stdio
   configSchema:
@@ -7,7 +7,7 @@ startCommand:
     type: object
     properties: {}
   commandFunction: |-
-    (config) => ({ command: "humane-intelligence", args: [] })
+    (config) => ({ command: "arkhive", args: [] })
 build:
   dockerfile: Dockerfile
   dockerBuildPath: .

@@ -1,10 +1,10 @@
-# Humane Intelligence MCP
-<!-- mcp-name: io.github.sammyboi81/humane-intelligence -->
+# ArkHive MCP
+<!-- mcp-name: io.github.sammyboi81/arkhive -->
 
 Local-first governed memory for AI agents, with persistent identity,
 tamper-evident history, verification, and constraint-aware decisions.
 
-Humane Intelligence is an open-source
+ArkHive is an open-source
 [Model Context Protocol](https://modelcontextprotocol.io) server for developers
 and teams that want Claude, Codex, and other MCP clients to retain accountable
 context across sessions without sending memory to a hosted service by default.
@@ -12,10 +12,10 @@ context across sessions without sending memory to a hosted service by default.
 ## Install in one command
 
 ```bash
-python -m pip install humane-intelligence
+python -m pip install arkhive
 ```
 
-The installed MCP command is `humane-intelligence`.
+The installed MCP command is `arkhive`.
 
 > **Release note:** PyPI currently provides version `0.1.0`. The repository
 > contains the prepared `0.1.1` metadata; do not publish or register `0.1.1`
@@ -32,7 +32,7 @@ Desktop:
 {
   "mcpServers": {
     "humane": {
-      "command": "humane-intelligence",
+      "command": "arkhive",
       "args": []
     }
   }
@@ -40,16 +40,16 @@ Desktop:
 ```
 
 If Claude Desktop cannot find commands installed by `pip`, replace
-`humane-intelligence` with the absolute path printed by:
+`arkhive` with the absolute path printed by:
 
 ```bash
-python -c "import shutil; print(shutil.which('humane-intelligence'))"
+python -c "import shutil; print(shutil.which('arkhive'))"
 ```
 
 ### Codex
 
 ```bash
-codex mcp add humane -- humane-intelligence
+codex mcp add humane -- arkhive
 ```
 
 Confirm it is configured with:
@@ -91,7 +91,7 @@ governance without production data.
 ## Privacy and optional contribution
 
 Local-only behavior is the default. With contribution disabled, no chain
-content or hashes are intentionally sent by Humane Intelligence.
+content or hashes are intentionally sent by ArkHive.
 
 Copy `humane.config.example.json` to `humane.config.json` only if you want to
 opt in:
@@ -122,9 +122,9 @@ local host immune to compromise.
 ## Project links
 
 - [Website](https://dondatabrain.com)
-- [PyPI](https://pypi.org/project/humane-intelligence/)
-- [Source](https://github.com/sammyboi81/humane-intelligence)
-- [Issues](https://github.com/sammyboi81/humane-intelligence/issues)
+- [PyPI](https://pypi.org/project/arkhive/)
+- [Source](https://github.com/sammyboi81/arkhive)
+- [Issues](https://github.com/sammyboi81/arkhive/issues)
 - [Apache-2.0 license](./LICENSE)
 
 ## Contributing
@@ -133,7 +133,7 @@ Issues and pull requests are welcome. Please keep local-only operation as the
 default, avoid introducing telemetry, and include tests for changes to memory
 or governance behavior.
 
-Humane Intelligence is the open governed-memory layer beneath
+ArkHive is the open governed-memory layer beneath
 [DonDataBrain](https://dondatabrain.com). The mission is humane, accountable AI;
 the public MCP listing leads with functionality that users can independently
 verify.

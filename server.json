@@ -1,17 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.sammyboi81/humane-intelligence",
-  "title": "Humane Intelligence MCP",
+  "name": "io.github.sammyboi81/arkhive",
+  "title": "ArkHive MCP",
   "description": "Local-first AI agent memory with tamper-evident history and constraint-aware decisions.",
   "repository": {
-    "url": "https://github.com/sammyboi81/humane-intelligence",
+    "url": "https://github.com/sammyboi81/arkhive",
     "source": "github"
   },
   "version": "0.1.0",
   "packages": [
     {
       "registryType": "pypi",
-      "identifier": "humane-intelligence",
+      "identifier": "arkhive",
       "version": "0.1.0",
       "transport": {
         "type": "stdio"

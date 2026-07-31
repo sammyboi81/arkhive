@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "humane-intelligence"
+name = "arkhive"
 version = "0.1.1"
 description = "Local-first governed memory for AI agents, with persistent identity, tamper-evident history, verification, and constraint-aware decisions."
 readme = "README.md"
@@ -25,14 +25,14 @@ http = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.0"]
 
 [project.urls]
 Homepage = "https://dondatabrain.com"
-Repository = "https://github.com/sammyboi81/humane-intelligence"
-"Issue Tracker" = "https://github.com/sammyboi81/humane-intelligence/issues"
-"License" = "https://github.com/sammyboi81/humane-intelligence/blob/main/LICENSE"
+Repository = "https://github.com/sammyboi81/arkhive"
+"Issue Tracker" = "https://github.com/sammyboi81/arkhive/issues"
+"License" = "https://github.com/sammyboi81/arkhive/blob/main/LICENSE"
 "Live API" = "https://dondatabrain.com/humane-api/docs"
 
 [project.scripts]
 arkhive-mcp = "server:main_sync"
-humane-intelligence = "server:main_sync"
+arkhive = "server:main_sync"
 
 [tool.setuptools]
 py-modules = ["server", "core", "contribution", "http_app"]
