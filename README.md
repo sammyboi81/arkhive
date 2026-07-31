@@ -3,6 +3,8 @@
 
 ### *Where context gives meaning.*
 
+[![smithery badge](https://smithery.ai/badge/tigerganger/ArkHive_context1)](https://smithery.ai/servers/tigerganger/ArkHive_context1)
+
 Local-first governed memory for AI agents, with persistent identity,
 tamper-evident history, verification, and constraint-aware decisions.
 
