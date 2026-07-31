@@ -1,6 +1,8 @@
 # ArkHive MCP
 <!-- mcp-name: io.github.sammyboi81/arkhive -->
 
+### *Where context gives meaning.*
+
 Local-first governed memory for AI agents, with persistent identity,
 tamper-evident history, verification, and constraint-aware decisions.
 
