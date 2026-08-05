@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "humane-intelligence"
-version = "0.1.1"
+version = "0.1.2"
 description = "ArkHive MCP — governed, tamper-evident memory for AI agents. Tell your AI to check the ArkHive."
 readme = "README.md"
 requires-python = ">=3.9"
