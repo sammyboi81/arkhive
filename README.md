@@ -126,8 +126,8 @@ local host immune to compromise.
 
 - [Website](https://dondatabrain.com)
 - [PyPI](https://pypi.org/project/humane-intelligence/)
-- [Source](https://github.com/sammyboi81/humane-intelligence)
-- [Issues](https://github.com/sammyboi81/humane-intelligence/issues)
+- [Source](https://github.com/sammyboi81/arkhive)
+- [Issues](https://github.com/sammyboi81/arkhive/issues)
 - [Apache-2.0 license](./LICENSE)
 
 ## Contributing
