@@ -11,6 +11,41 @@ ArkHive is an open-source
 and teams that want Claude, Codex, and other MCP clients to retain accountable
 context across sessions without sending memory to a hosted service by default.
 
+## What you get
+
+- **Memory that survives the session.** Your AI writes what it did and reads it
+  back next time — no blank slate every morning.
+- **Tamper-evident history.** Every record is hash-chained (SHA-256). Edit,
+  delete, or reorder any past record and verification fails — you get evidence
+  of change, not silent rewriting.
+- **Local-first, no telemetry.** The chain is a plain SQLite file on your
+  machine. Nothing is transmitted unless you explicitly opt in.
+
+### Verify it yourself — one command, no key
+
+Don't take "tamper-evident" on faith. Run the proof:
+
+```bash
+git clone https://github.com/sammyboi81/arkhive && cd arkhive
+./scripts/verify.sh          # or:  python -m benchmark
+```
+
+It writes a throwaway hash-chained ledger, verifies it clean, then **forges one
+block with a direct SQL edit** and shows verification catch it. Real output:
+
+```
+[3] verify (untouched):    blocks=20 broken_links=0 -> INTACT — context provably unbroken
+[4] TAMPERED block idx=10: 'event_10' -> 'FORGED_EVENT' (direct SQL edit, no hash recomputed)
+[5] verify (after tamper): blocks=20 broken_links=1 -> TAMPERED — 1 broken links
+RESULT: PASS - tamper-evidence proven.
+```
+
+A clean chain verifies with **0** broken links; a single forged edit is
+**caught**. Your real `data/chain.db` is never touched. For the honest limits of
+what a hash chain can and cannot protect, see
+[What the hash chain protects against](#what-the-hash-chain-protects-against)
+below.
+
 ## Install in one command
 
 ```bash
