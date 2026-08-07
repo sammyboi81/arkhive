@@ -12,8 +12,23 @@ SQLite + SHA-256. Zero proprietary dependencies. Apache-2.0.
 import os, json, sqlite3, hashlib, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DB = os.path.join(HERE, "data", "chain.db")
-os.makedirs(os.path.join(HERE, "data"), exist_ok=True)
+_LEGACY_DB = os.path.join(HERE, "data", "chain.db")
+
+
+def _db_path():
+    """ARKHIVE_DB env wins; a pre-0.2 in-package chain is honored; else ~/.arkhive."""
+    env = os.environ.get("ARKHIVE_DB")
+    if env:
+        return env
+    if os.path.exists(_LEGACY_DB):
+        return _LEGACY_DB
+    return os.path.join(os.path.expanduser("~"), ".arkhive", "chain.db")
+
+
+DB = _db_path()
+_d = os.path.dirname(DB)
+if _d:
+    os.makedirs(_d, exist_ok=True)
 
 
 def _c():
@@ -45,9 +60,24 @@ def is_born(sid):
     c = _c(); r = c.execute("SELECT 1 FROM souls WHERE soul_id=?", (sid,)).fetchone(); c.close(); return r is not None
 
 
+def resolve_actor(actor):
+    """Accept a soul_id or a birth name; return the canonical soul_id, or None."""
+    if not actor: return None
+    c = _c()
+    try:
+        if c.execute("SELECT 1 FROM souls WHERE soul_id=?", (actor,)).fetchone():
+            return actor
+        r = c.execute("SELECT soul_id FROM souls WHERE name=? ORDER BY idx DESC LIMIT 1", (actor,)).fetchone()
+        return r[0] if r else None
+    finally:
+        c.close()
+
+
 def remember(actor, action, data):
-    if not is_born(actor):
-        return {"refused": True, "reason": f"'{actor}' is not a born soul. Earn identity via birth() first (Law 5).", "verdict": "REFUSED"}
+    sid = resolve_actor(actor)
+    if not sid:
+        return {"refused": True, "reason": f"'{actor}' is not a born soul. Earn identity via birth() first (Law 5), then act as the returned soul_id (or your birth name).", "verdict": "REFUSED"}
+    actor = sid
     c = _c(); row = c.execute("SELECT idx,hash FROM blocks ORDER BY idx DESC LIMIT 1").fetchone()
     idx = (row[0]+1) if row else 0; prev = row[1] if row else "GENESIS"; ts = _now()
     d = json.dumps(data or {}); h = _h(idx, ts, actor, action, d, prev)
@@ -72,6 +102,8 @@ def contribution_status():
 
 
 def recall(actor=None, limit=10):
+    if actor:
+        actor = resolve_actor(actor) or actor
     c = _c()
     q = "SELECT idx,ts,actor,action,data FROM blocks" + (" WHERE actor=?" if actor else "") + " ORDER BY idx DESC LIMIT ?"
     rows = c.execute(q, ((actor, limit) if actor else (limit,))).fetchall(); c.close()

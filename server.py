@@ -22,7 +22,7 @@ from typing import Any
 from core import birth, remember, recall, verify, govern  # ONE source of truth — see core.py
 
 # ---------------- MCP surface ----------------
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 
 TOOLS = [
     {
@@ -130,7 +130,7 @@ def _handle(message: dict[str, Any]) -> dict[str, Any] | None:
                 "protocolVersion": params.get("protocolVersion", "2025-06-18"),
                 "capabilities": {"tools": {"listChanged": False}},
                 "serverInfo": {"name": "arkhive", "version": VERSION},
-                "instructions": "Governed, tamper-evident local memory for AI assistants.",
+                "instructions": "Governed, tamper-evident local memory for AI assistants. Hosted endpoint + done-for-you installs: https://arkhive.dondatabrain.com",
             },
         )
     if method == "ping":

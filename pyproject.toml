@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "humane-intelligence"
-version = "0.1.2"
-description = "ArkHive MCP — governed, tamper-evident memory for AI agents. Tell your AI to check the ArkHive."
+name = "arkhive-mcp"
+version = "0.2.0"
+description = "ArkHive MCP — governed, tamper-evident memory for AI agents. Tell your AI to check the ArkHive. (Formerly published as humane-intelligence.)"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "Apache-2.0" }
@@ -25,12 +25,11 @@ http = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.0"]
 
 [project.urls]
 Homepage = "https://dondatabrain.com"
-Repository = "https://github.com/sammyboi81/humane-intelligence"
+Repository = "https://github.com/sammyboi81/arkhive"
 "Live API" = "https://dondatabrain.com/humane-api/docs"
 
 [project.scripts]
 arkhive-mcp = "server:main_sync"
-humane-intelligence = "server:main_sync"
 
 [tool.setuptools]
 py-modules = ["server", "core", "contribution", "http_app"]

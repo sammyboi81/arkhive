@@ -49,15 +49,15 @@ below.
 ## Install in one command
 
 ```bash
-python -m pip install humane-intelligence
+python -m pip install arkhive-mcp
 ```
 
-The preferred MCP command is `arkhive-mcp`. The existing
-`humane-intelligence` command remains available for backward compatibility.
+The MCP command is `arkhive-mcp`.
 
-> **Release note:** PyPI currently provides version `0.1.0`. The repository
-> contains the prepared `0.1.1` metadata; do not publish or register `0.1.1`
-> until that package version has been released to PyPI.
+> **Renamed:** this package was formerly published as `humane-intelligence`
+> (still installable, now frozen). ArkHive is the product;
+> #HumaneIntelligence is the movement.
+
 
 ## Connect an MCP client
 
@@ -158,6 +158,24 @@ particular chain state existed at a particular time, but it does not make the
 local host immune to compromise.
 
 ## Project links
+
+
+## Beyond self-hosting — the paid tier
+
+The MCP server on this page is free forever (Apache-2.0, self-host, no telemetry).
+When you want more than DIY:
+
+- **Hosted ArkHive** — one URL, no install, no key:
+  `https://arkhive.dondatabrain.com/mcp` (add it to Claude Code with
+  `claude mcp add --transport http arkhive https://arkhive.dondatabrain.com/mcp`).
+- **Custom AI agent, built for you** — a working MCP agent wired into your
+  Claude or ChatGPT in one call, done-for-you by the founder:
+  [$700 flat](https://inboxaxe.com/offer_agent.html).
+- **ArkHive Enterprise** — hand-delivered install + pilot on your own server,
+  from $2,500: [sam@inboxaxe.com](mailto:sam@inboxaxe.com?subject=ArkHive%20Enterprise%20install).
+
+Built by the team behind [InboxAxe](https://inboxaxe.com) — the governed AI
+marketing platform where nothing sends without your yes.
 
 - [Website](https://dondatabrain.com)
 - [PyPI](https://pypi.org/project/humane-intelligence/)
