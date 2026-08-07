@@ -1,0 +1,31 @@
+# Smithery configuration — https://smithery.ai/docs
+#
+# ArkHive MCP is a REMOTE, already-hosted HTTP MCP server. It runs on our own
+# infrastructure and speaks the Streamable HTTP MCP transport at:
+#
+#     https://arkhive.dondatabrain.com/mcp
+#
+# Smithery does NOT build or host this server — there is no Dockerfile and no
+# build section on purpose. This file declares the HTTP transport plus the
+# per-user config Smithery should collect and forward to the endpoint.
+#
+# Governance model (see http_app.py / core.py — ONE chain, ONE source of truth):
+#   recall, verify  -> open, no key required
+#   birth, remember, govern -> governed writes; supply your ArkHive API key.
+startCommand:
+  type: http
+  # Optional per-user config. ArkHive read paths (recall/verify) need no key;
+  # write paths (birth/remember/govern) are governed and accept an API key,
+  # sent by the server as the X-API-Key header.
+  configSchema:
+    type: object
+    properties:
+      apiKey:
+        type: string
+        title: ArkHive API Key
+        description: >-
+          Optional. Only needed for governed writes (birth / remember / govern).
+          Leave blank to use the open read-only surface (recall / verify).
+    required: []
+  exampleConfig:
+    apiKey: ""
