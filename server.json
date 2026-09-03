@@ -15,7 +15,8 @@
       "version": "0.2.0",
       "transport": {
         "type": "stdio"
-      }
+      },
+      "runtimeHint": "python"
     }
   ]
 }
