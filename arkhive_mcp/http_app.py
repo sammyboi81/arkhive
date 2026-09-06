@@ -15,7 +15,7 @@ from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-import core
+from . import core
 
 API_KEY = os.environ.get("HUMANE_API_KEY", "")
 

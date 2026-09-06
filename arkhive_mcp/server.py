@@ -19,15 +19,15 @@ import json
 import sys
 from typing import Any
 
-from core import birth, remember, recall, verify, govern  # ONE source of truth — see core.py
+from .core import birth, remember, recall, verify, govern  # ONE source of truth — see core.py
 
 # ---------------- MCP surface ----------------
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 
 TOOLS = [
     {
         "name": "birth",
-        "description": "Earn an identity (Law 5: born, not configured) before acting.",
+        "description": "Step 1, once: earn an identity before acting (Law 5: born, not configured). Returns a soul_id; use it or the name as `actor` from then on. Example: birth(name=Ember, covenant=[truth over comfort]).",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -39,7 +39,7 @@ TOOLS = [
     },
     {
         "name": "remember",
-        "description": "Write a tamper-evident record. Requires a born soul_id as actor.",
+        "description": "Write one hash-linked, tamper-evident record. actor = a born soul_id or birth name. Example: remember(actor=Ember, action=shipped v0.2.1, data={pr: 42}).",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -52,7 +52,7 @@ TOOLS = [
     },
     {
         "name": "recall",
-        "description": "Read prior context so the AI need not re-derive it.",
+        "description": "Read the latest records (newest first, optionally one actor) so you do not re-derive what you already know. Call this at the start of a session.",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -63,12 +63,12 @@ TOOLS = [
     },
     {
         "name": "verify",
-        "description": "Prove the entire memory chain is unbroken.",
+        "description": "Prove the entire memory chain is unbroken (recomputes every hash). Free, local, no key.",
         "inputSchema": {"type": "object", "properties": {}},
     },
     {
         "name": "govern",
-        "description": "Ask whether an action may proceed using deterministic rules.",
+        "description": "Ask may-I before acting. Deterministic, zero-LLM: any rule whose trigger appears in flags vetoes. flags/rules accept lists or {name: true} / {trigger: action} maps.",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -130,7 +130,7 @@ def _handle(message: dict[str, Any]) -> dict[str, Any] | None:
                 "protocolVersion": params.get("protocolVersion", "2025-06-18"),
                 "capabilities": {"tools": {"listChanged": False}},
                 "serverInfo": {"name": "arkhive", "version": VERSION},
-                "instructions": "Governed, tamper-evident local memory for AI assistants. Hosted endpoint + done-for-you installs: https://arkhive.dondatabrain.com",
+                "instructions": "ArkHive: local, tamper-evident memory. First call recall(limit=10) to load context. Once per identity call birth(name, covenant); then remember(actor, action, data) what matters and govern(action, flags, rules) before anything irreversible. verify() proves nothing was altered. Upgrade (spaces, search, context packs, signed verify, hosted): https://inboxaxe.com/mcp",
             },
         )
     if method == "ping":

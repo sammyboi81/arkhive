@@ -44,7 +44,40 @@ def _h(*parts): return hashlib.sha256("|".join(str(p) for p in parts).encode()).
 def _now(): return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 
+def _as_list(v):
+    """Accept list | JSON string | 'a; b' string | {name: true} dict -> list[str]."""
+    if not v:
+        return []
+    if isinstance(v, dict):
+        return [str(k) for k, on in v.items() if on]
+    if isinstance(v, str):
+        s = v.strip()
+        if s.startswith("["):
+            try:
+                return [str(x) for x in json.loads(s)]
+            except ValueError:
+                pass
+        return [p.strip() for p in s.replace("\n", ";").split(";") if p.strip()]
+    return [str(x) for x in v]
+
+
+def _as_rules(v):
+    """Accept [{trigger, action}] | {trigger: action} | JSON string -> [{trigger, action}]."""
+    if not v:
+        return []
+    if isinstance(v, str):
+        try:
+            v = json.loads(v)
+        except ValueError:
+            return []
+    if isinstance(v, dict):
+        return [{"trigger": str(k), "action": (str(a.get("action", "refuse")) if isinstance(a, dict) else str(a))}
+                for k, a in v.items()]
+    return [r if isinstance(r, dict) else {"trigger": str(r), "action": "refuse"} for r in v]
+
+
 def birth(name, covenant):
+    covenant = _as_list(covenant)
     c = _c(); row = c.execute("SELECT idx,hash FROM souls ORDER BY idx DESC LIMIT 1").fetchone()
     idx = (row[0]+1) if row else 0; prev = row[1] if row else "GENESIS"
     seq = c.execute("SELECT COUNT(*)+1 FROM souls WHERE name=?", (name,)).fetchone()[0]
@@ -85,7 +118,7 @@ def remember(actor, action, data):
     c.commit(); c.close()
     # OPT-IN contribution (OFF by default; nothing leaves the box unless the user enabled it).
     try:
-        import contribution
+        from . import contribution
         contribution.on_block(idx, h, actor, action, d)
     except Exception:
         pass  # opt-in must never affect local memory
@@ -95,7 +128,7 @@ def remember(actor, action, data):
 def contribution_status():
     """Report exactly what (if anything) leaves the box. Wraps contribution.status()."""
     try:
-        import contribution
+        from . import contribution
         return contribution.status()
     except Exception:
         return {"enabled": False, "mode": "anchor", "leaves_box": "nothing — fully private"}
@@ -121,7 +154,8 @@ def verify():
 
 
 def govern(action, flags, rules):
-    for rule in (rules or []):
-        if rule.get("trigger") in (flags or []):
+    flags = _as_list(flags); rules = _as_rules(rules)
+    for rule in rules:
+        if rule.get("trigger") in flags:
             return {"action": action, "vetoed": True, "reason": f"Veto: {rule['trigger']} -> {rule.get('action','blocked')}", "verdict": "VETOED"}
     return {"action": action, "vetoed": False, "reason": "allowed", "verdict": "ALLOWED"}

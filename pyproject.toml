@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arkhive-mcp"
-version = "0.2.0"
+version = "0.2.1"
 description = "ArkHive MCP — governed, tamper-evident memory for AI agents. Tell your AI to check the ArkHive. (Formerly published as humane-intelligence.)"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -29,7 +29,7 @@ Repository = "https://github.com/sammyboi81/arkhive"
 "Live API" = "https://dondatabrain.com/humane-api/docs"
 
 [project.scripts]
-arkhive-mcp = "server:main_sync"
+arkhive-mcp = "arkhive_mcp.server:main_sync"
 
 [tool.setuptools]
-py-modules = ["server", "core", "contribution", "http_app"]
+packages = ["arkhive_mcp"]

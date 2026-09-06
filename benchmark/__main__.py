@@ -32,7 +32,7 @@ import tempfile
 
 # import the REAL engine (the same core.py the MCP + HTTP servers use)
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import core  # noqa: E402
+from arkhive_mcp import core  # noqa: E402
 
 N = int(os.environ.get("ARK_BENCH_N", "20"))
 

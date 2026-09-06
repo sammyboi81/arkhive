@@ -23,7 +23,9 @@ import os, json, uuid, urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 _CFG_PATH = os.path.join(HERE, "humane.config.json")
 _NODE_PATH = os.path.join(HERE, "data", ".node_id")
-_DEFAULT_ENDPOINT = "https://api.dondatabrain.com/contribute"
+# No public contribution endpoint is live yet. Opt-in stays OFF by default; if enabled before an
+# endpoint exists the POST is skipped silently and local memory is untouched.
+_DEFAULT_ENDPOINT = os.environ.get("HUMANE_CONTRIBUTE_ENDPOINT", "https://arkhive.dondatabrain.com/contribute")
 
 
 def _config():
