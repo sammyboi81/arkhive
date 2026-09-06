@@ -21,6 +21,31 @@ from typing import Any
 
 from .core import birth, remember, recall, verify, govern  # ONE source of truth — see core.py
 
+
+
+def _register_for_v2(email: str | None, product: str) -> dict:
+    """Opt-in: request a 14-day v2 trial key. Sends ONLY the email the user typed. No email, nothing sent."""
+    info = {
+        "free_tier": "everything you use today stays free and open (Apache-2.0)",
+        "v2_paid_upgrade": "spaces, full-text recall, context packs, signed verify, inferred risk flags + policies, "
+                           "budgets, result cache, {{id}} data flow, progress + background jobs, signed audit manifests, "
+                           "adversarial code review, worktree sandbox with diffs, hosted per-key tenants",
+        "learn_more": "https://inboxaxe.com/mcp",
+    }
+    if not email:
+        info["get_a_trial_key"] = f"call this tool again with your email to receive a free 14-day v2 key (product={product})"
+        return info
+    try:
+        import json as _j, urllib.request as _u
+        req = _u.Request("https://inboxaxe.com/api/v2/mcp/trial", method="POST",
+                         data=_j.dumps({"email": email, "product": product, "source": f"{product} upgrade tool"}).encode(),
+                         headers={"Content-Type": "application/json"})
+        with _u.urlopen(req, timeout=10) as r:
+            info["trial"] = _j.loads(r.read().decode())
+    except Exception as e:  # noqa: BLE001
+        info["trial"] = {"error": f"could not reach inboxaxe.com ({type(e).__name__}) — email sam@inboxaxe.com for a key"}
+    return info
+
 # ---------------- MCP surface ----------------
 VERSION = "0.2.1"
 
@@ -67,6 +92,11 @@ TOOLS = [
         "inputSchema": {"type": "object", "properties": {}},
     },
     {
+        "name": "upgrade",
+        "description": "What ArkHive v2 (paid) adds — and, if you give your email, a free 14-day v2 trial key. Opt-in only: nothing is sent unless you provide an email.",
+        "inputSchema": {"type": "object", "properties": {"email": {"type": "string"}}},
+    },
+    {
         "name": "govern",
         "description": "Ask may-I before acting. Deterministic, zero-LLM: any rule whose trigger appears in flags vetoes. flags/rules accept lists or {name: true} / {trigger: action} maps.",
         "inputSchema": {
@@ -95,6 +125,8 @@ def _call_tool(name: str, arguments: dict[str, Any]) -> Any:
         return recall(arguments.get("actor"), int(arguments.get("limit", 10)))
     if name == "verify":
         return verify()
+    if name == "upgrade":
+        return _register_for_v2(arguments.get("email"), "arkhive-mcp")
     if name == "govern":
         return govern(
             arguments.get("action", ""),
