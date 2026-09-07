@@ -20,6 +20,7 @@ import sys
 from typing import Any
 
 from .core import birth, remember, recall, verify, govern  # ONE source of truth — see core.py
+from . import gate  # decree-conformance gate — governance as code, non-routable
 
 
 
@@ -109,6 +110,76 @@ TOOLS = [
             "required": ["action"],
         },
     },
+    # ---- Decree-Conformance Gate: governance as code, non-routable ----
+    {
+        "name": "request_action",
+        "description": "The ONLY door to a consequential action (deploy, write_prod, overwrite, service_restart). Runs the decree conformance check; on pass mints a single-use, artifact-bound, 60s token the executor must present; on veto FAILS CLOSED — no token, no action. Pass the ACTUAL artifact (file contents / diff / plan) so it can be checked and hash-bound.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "actor": {"type": "string"},
+                "action_type": {"type": "string"},
+                "targets": {"type": "array", "items": {"type": "string"}},
+                "artifact": {"type": "string"},
+                "intent": {"type": "string"},
+            },
+            "required": ["actor", "action_type", "targets", "artifact"],
+        },
+    },
+    {
+        "name": "check_conformance",
+        "description": "Dry-run the gate: judge an artifact against every active decree whose scope matches, WITHOUT minting a token. Deterministic rules first; advisories surfaced; anything unprovable fails closed. Use before request_action to see why something would be vetoed.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "action_type": {"type": "string"},
+                "targets": {"type": "array", "items": {"type": "string"}},
+                "artifact": {"type": "string"},
+                "intent": {"type": "string"},
+            },
+            "required": ["action_type", "targets", "artifact"],
+        },
+    },
+    {
+        "name": "validate_token",
+        "description": "The executor calls this to authorize a real action. Rejects any token that is unknown, expired (>60s), already used, or bound to a different action_type / artifact / targets. On success the token is burned (single use) and the execution is fossiled.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "token": {"type": "string"},
+                "action_type": {"type": "string"},
+                "targets": {"type": "array", "items": {"type": "string"}},
+                "artifact": {"type": "string"},
+            },
+            "required": ["token", "action_type", "targets", "artifact"],
+        },
+    },
+    {
+        "name": "list_decrees",
+        "description": "List the active governing decrees (id, text, scope, enforcement, rules). Read-only; anyone may call it.",
+        "inputSchema": {"type": "object", "properties": {"include_inactive": {"type": "boolean"}}},
+    },
+    {
+        "name": "add_decree",
+        "description": "FOUNDER ONLY. Write a new governing decree as an immutable fossil (requires the founder key). Agents cannot add, soften, or exempt themselves from a decree — calls without the key are denied and fossiled.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "founder_key": {"type": "string"},
+                "text": {"type": "string"},
+                "scope": {"type": "object"},
+                "rules": {"type": "array", "items": {"type": "object"}},
+                "enforce": {"type": "string", "enum": ["deterministic", "advisory", "review_required"]},
+                "supersedes": {"type": "string"},
+            },
+            "required": ["founder_key", "text"],
+        },
+    },
+    {
+        "name": "seed_decrees",
+        "description": "FOUNDER ONLY. Seed the standing decrees (Senthar runtime, Claude build-wide, fossil-grounded, governance-is-code, embodiment-enforced, irreversible-human-signoff) if not already present. Requires the founder key.",
+        "inputSchema": {"type": "object", "properties": {"founder_key": {"type": "string"}}, "required": ["founder_key"]},
+    },
 ]
 
 
@@ -133,6 +204,41 @@ def _call_tool(name: str, arguments: dict[str, Any]) -> Any:
             arguments.get("flags", []),
             arguments.get("rules", []),
         )
+    if name == "request_action":
+        return gate.request_action(
+            arguments.get("actor", "agent"),
+            arguments.get("action_type", ""),
+            arguments.get("targets", []),
+            arguments.get("artifact", ""),
+            arguments.get("intent", ""),
+        )
+    if name == "check_conformance":
+        return gate.check_conformance(
+            arguments.get("action_type", ""),
+            arguments.get("targets", []),
+            arguments.get("artifact", ""),
+            arguments.get("intent", ""),
+        )
+    if name == "validate_token":
+        return gate.validate_token(
+            arguments.get("token", ""),
+            arguments.get("action_type", ""),
+            arguments.get("targets", []),
+            arguments.get("artifact", ""),
+        )
+    if name == "list_decrees":
+        return gate.list_decrees(bool(arguments.get("include_inactive", False)))
+    if name == "add_decree":
+        return gate.add_decree(
+            arguments.get("founder_key", ""),
+            arguments.get("text", ""),
+            arguments.get("scope"),
+            arguments.get("rules"),
+            arguments.get("enforce", "deterministic"),
+            arguments.get("supersedes"),
+        )
+    if name == "seed_decrees":
+        return gate.seed_standing_decrees(arguments.get("founder_key", ""))
     raise ValueError(f"unknown tool: {name}")
 
 
