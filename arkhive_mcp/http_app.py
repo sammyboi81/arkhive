@@ -16,6 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from . import core
+from . import gate
 
 API_KEY = os.environ.get("HUMANE_API_KEY", "")
 
@@ -82,3 +83,57 @@ def http_verify():
 def http_govern(req: GovernReq, x_api_key: Optional[str] = Header(None)):
     _auth(x_api_key)
     return core.govern(req.action, req.flags, req.rules)
+
+
+# ---------------- Decree-Conformance Gate (same chain) ----------------
+class RequestActionReq(BaseModel):
+    actor: str = Field(..., description="the agent requesting the action")
+    action_type: str = Field(..., description="deploy | write_prod | overwrite | service_restart")
+    targets: List[str] = Field(default_factory=list, description="paths / resources the action touches")
+    artifact: str = Field("", description="the ACTUAL thing being deployed (file contents / diff / plan)")
+    intent: str = Field("", description="why")
+
+class CheckReq(BaseModel):
+    action_type: str
+    targets: List[str] = Field(default_factory=list)
+    artifact: str = ""
+    intent: str = ""
+
+class ValidateReq(BaseModel):
+    token: str
+    action_type: str
+    targets: List[str] = Field(default_factory=list)
+    artifact: str = ""
+
+class AddDecreeReq(BaseModel):
+    founder_key: str = Field(..., description="the founder root-of-trust key — agents do not have it")
+    text: str
+    scope: Dict[str, Any] = Field(default_factory=dict)
+    rules: List[Dict[str, Any]] = Field(default_factory=list)
+    enforce: str = "deterministic"
+    supersedes: Optional[str] = None
+
+
+@app.get("/decrees", operation_id="list_decrees", summary="List the active governing decrees (read-only)")
+def http_list_decrees(include_inactive: bool = False):
+    return gate.list_decrees(include_inactive)
+
+@app.post("/request_action", operation_id="request_action", summary="The only door to a consequential action — conformance-checked, token on pass")
+def http_request_action(req: RequestActionReq, x_api_key: Optional[str] = Header(None)):
+    _auth(x_api_key)
+    return gate.request_action(req.actor, req.action_type, req.targets, req.artifact, req.intent)
+
+@app.post("/check_conformance", operation_id="check_conformance", summary="Dry-run the gate against the decrees (no token minted)")
+def http_check(req: CheckReq, x_api_key: Optional[str] = Header(None)):
+    _auth(x_api_key)
+    return gate.check_conformance(req.action_type, req.targets, req.artifact, req.intent)
+
+@app.post("/validate_token", operation_id="validate_token", summary="Executor gate — authorize a real action or refuse")
+def http_validate(req: ValidateReq, x_api_key: Optional[str] = Header(None)):
+    _auth(x_api_key)
+    return gate.validate_token(req.token, req.action_type, req.targets, req.artifact)
+
+@app.post("/decrees", operation_id="add_decree", summary="FOUNDER ONLY — add an immutable governing decree (needs the founder key)")
+def http_add_decree(req: AddDecreeReq, x_api_key: Optional[str] = Header(None)):
+    _auth(x_api_key)
+    return gate.add_decree(req.founder_key, req.text, req.scope, req.rules, req.enforce, req.supersedes)

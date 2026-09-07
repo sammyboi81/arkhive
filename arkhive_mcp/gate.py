@@ -146,7 +146,7 @@ def add_decree(founder_key, text, scope=None, rules=None, enforce="deterministic
     did = decree_id or ("decree-" + hashlib.sha256((text or "") .encode()).hexdigest()[:10])
     payload = {
         "decree_id": did, "text": text, "scope": scope, "rules": rules,
-        "enforce": enforce if enforce in ("deterministic", "advisory") else "deterministic",
+        "enforce": enforce if enforce in ("deterministic", "advisory", "review_required") else "deterministic",
         "active": True, "supersedes": supersedes,
         "author": "founder", "author_fp": _founder_fingerprint(),
     }

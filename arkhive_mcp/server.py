@@ -48,7 +48,7 @@ def _register_for_v2(email: str | None, product: str) -> dict:
     return info
 
 # ---------------- MCP surface ----------------
-VERSION = "0.2.1"
+VERSION = "0.3.0"
 
 TOOLS = [
     {
@@ -268,7 +268,7 @@ def _handle(message: dict[str, Any]) -> dict[str, Any] | None:
                 "protocolVersion": params.get("protocolVersion", "2025-06-18"),
                 "capabilities": {"tools": {"listChanged": False}},
                 "serverInfo": {"name": "arkhive", "version": VERSION},
-                "instructions": "ArkHive: local, tamper-evident memory. First call recall(limit=10) to load context. Once per identity call birth(name, covenant); then remember(actor, action, data) what matters and govern(action, flags, rules) before anything irreversible. verify() proves nothing was altered. Upgrade (spaces, search, context packs, signed verify, hosted): https://inboxaxe.com/mcp",
+                "instructions": "ArkHive: local, tamper-evident memory + a decree-conformance gate. First call recall(limit=10) to load context. Once per identity call birth(name, covenant); then remember(actor, action, data) what matters and govern(action, flags, rules) before anything irreversible. verify() proves nothing was altered. GATE: consequential actions (deploy/write_prod/overwrite/service_restart) must go through request_action(actor, action_type, targets, artifact) — it checks the artifact against the founder's decrees (list_decrees) and only on pass mints a single-use token the executor validates; a veto fails closed. Adding/softening decrees is founder-only. Upgrade (spaces, search, context packs, signed verify, hosted): https://inboxaxe.com/mcp",
             },
         )
     if method == "ping":
