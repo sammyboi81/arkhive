@@ -46,6 +46,10 @@ what a hash chain can and cannot protect, see
 [What the hash chain protects against](#what-the-hash-chain-protects-against)
 below.
 
+> **New: the Claude Code Seatbelt.** Hooks that make Claude Code (and Cursor) ask before anything irreversible, remember the
+> project between sessions on this chain, and refuse to say "done" until the code ran. Engine: `pip install sentarion-mcp`
+> then `sentarion seatbelt install`. One-click kit with five policies and three skills: https://inboxaxe.com/mcp#seatbelt
+
 ## Install in one command
 
 ```bash
