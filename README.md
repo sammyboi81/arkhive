@@ -182,7 +182,7 @@ Built by the team behind [InboxAxe](https://inboxaxe.com) — the governed AI
 marketing platform where nothing sends without your yes.
 
 - [Website](https://dondatabrain.com)
-- [PyPI](https://pypi.org/project/humane-intelligence/)
+- [PyPI](https://pypi.org/project/arkhive-mcp/)
 - [Source](https://github.com/sammyboi81/arkhive)
 - [Issues](https://github.com/sammyboi81/arkhive/issues)
 - [Apache-2.0 license](./LICENSE)
