@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.sammyboi81/arkhive",
   "title": "ArkHive MCP",
-  "description": "ArkHive MCP: governed, tamper-evident local memory for AI agents. Where context gives meaning.",
+  "description": "Local memory your AI cannot silently rewrite: hash-chained, verifiable, never leaves your machine.",
   "repository": {
     "url": "https://github.com/sammyboi81/arkhive",
     "source": "github"
