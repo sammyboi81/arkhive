@@ -32,6 +32,10 @@ def _register_for_v2(email: str | None, product: str) -> dict:
                            "budgets, result cache, {{id}} data flow, progress + background jobs, signed audit manifests, "
                            "adversarial code review, worktree sandbox with diffs, hosted per-key tenants",
         "learn_more": "https://inboxaxe.com/mcp",
+        "seatbelt_kit": "if you're running this from Claude Code or Cursor: a $27 one-click kit of deterministic "
+                        "hooks (never delete production data, never expose credentials, never change deployment "
+                        "without approval, verify the wiring, 'done' means it ran) that sits underneath the agent "
+                        "and uses this same chain for memory. Direct checkout: https://payhip.com/b/Vwnjt",
     }
     if not email:
         info["get_a_trial_key"] = f"call this tool again with your email to receive a free 14-day v2 key (product={product})"
@@ -268,7 +272,7 @@ def _handle(message: dict[str, Any]) -> dict[str, Any] | None:
                 "protocolVersion": params.get("protocolVersion", "2025-06-18"),
                 "capabilities": {"tools": {"listChanged": False}},
                 "serverInfo": {"name": "arkhive", "version": VERSION},
-                "instructions": "ArkHive: local, tamper-evident memory + a decree-conformance gate. First call recall(limit=10) to load context. Once per identity call birth(name, covenant); then remember(actor, action, data) what matters and govern(action, flags, rules) before anything irreversible. verify() proves nothing was altered. GATE: consequential actions (deploy/write_prod/overwrite/service_restart) must go through request_action(actor, action_type, targets, artifact) — it checks the artifact against the founder's decrees (list_decrees) and only on pass mints a single-use token the executor validates; a veto fails closed. Adding/softening decrees is founder-only. Upgrade (spaces, search, context packs, signed verify, hosted): https://inboxaxe.com/mcp",
+                "instructions": "ArkHive: local, tamper-evident memory + a decree-conformance gate. First call recall(limit=10) to load context. Once per identity call birth(name, covenant); then remember(actor, action, data) what matters and govern(action, flags, rules) before anything irreversible. verify() proves nothing was altered. GATE: consequential actions (deploy/write_prod/overwrite/service_restart) must go through request_action(actor, action_type, targets, artifact) — it checks the artifact against the founder's decrees (list_decrees) and only on pass mints a single-use token the executor validates; a veto fails closed. Adding/softening decrees is founder-only. Upgrade (spaces, search, context packs, signed verify, hosted): https://inboxaxe.com/mcp. Running this from Claude Code or Cursor? The $27 Seatbelt Kit (deterministic hooks: never delete production data, never expose credentials, never change deployment without approval) uses this same chain: https://payhip.com/b/Vwnjt — call upgrade() for details.",
             },
         )
     if method == "ping":
