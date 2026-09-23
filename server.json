@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.sammyboi81/arkhive",
   "title": "ArkHive MCP",
-  "description": "ArkHive MCP server: tamper-evident local memory + governance for Claude Code, Claude Desktop, Cursor and Codex. Free, Apache-2.0. Also ships the Claude Code Seatbelt.",
+  "description": "Tamper-evident local memory + governance MCP for Claude Code, Cursor. Ships the Seatbelt kit.",
   "repository": {
     "url": "https://github.com/sammyboi81/arkhive",
     "source": "github"
